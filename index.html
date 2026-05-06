@@ -426,21 +426,25 @@
 
       @media (max-width: 980px) {
         .app {
-          width: min(100% - 18px, 1480px);
-          padding-top: 14px;
+          width: min(100% - 12px, 1480px);
+          padding-top: 10px;
         }
 
         .topbar {
           display: block;
+          margin-bottom: 10px;
         }
 
         .summary {
           justify-content: flex-start;
-          margin-top: 12px;
+          margin-top: 8px;
+          gap: 6px;
         }
 
         .controls {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+          padding: 10px;
         }
 
         .controls button {
@@ -448,21 +452,123 @@
         }
 
         .table-shell {
-          max-height: calc(100vh - 310px);
+          margin-top: 10px;
+          max-height: calc(100vh - 245px);
         }
       }
 
       @media (max-width: 560px) {
+        body {
+          line-height: 1.35;
+        }
+
+        h1 {
+          font-size: 1.18rem;
+        }
+
+        .version {
+          margin-top: 2px;
+          font-size: 0.76rem;
+        }
+
+        .summary {
+          display: none;
+        }
+
         .controls {
-          grid-template-columns: 1fr;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          border-radius: 7px;
+          gap: 6px;
+          padding: 7px;
         }
 
         .controls button {
-          grid-column: 1;
+          grid-column: auto;
+          min-height: 34px;
+          padding: 5px 8px;
+          font-size: 0.82rem;
         }
 
-        .chip {
-          width: 100%;
+        label {
+          gap: 2px;
+          font-size: 0.7rem;
+        }
+
+        input,
+        select {
+          min-height: 34px;
+          padding: 4px 7px;
+          border-radius: 6px;
+          font-size: 0.84rem;
+        }
+
+        .notice {
+          margin-top: 6px;
+          font-size: 0.72rem;
+        }
+
+        .legend {
+          margin-top: 6px;
+          gap: 5px;
+          font-size: 0.68rem;
+        }
+
+        .mark {
+          width: 14px;
+          height: 9px;
+        }
+
+        .table-shell {
+          max-height: calc(100vh - 190px);
+          border-radius: 7px;
+        }
+
+        table {
+          min-width: 760px;
+          font-size: 0.76rem;
+        }
+
+        th,
+        td {
+          padding: 4px 5px;
+        }
+
+        th:first-child,
+        td:first-child {
+          min-width: 116px;
+          max-width: 136px;
+        }
+
+        td:nth-child(2),
+        th:nth-child(2) {
+          min-width: 88px;
+          max-width: 98px;
+          white-space: normal;
+        }
+
+        td:nth-child(3),
+        th:nth-child(3) {
+          min-width: 36px;
+          max-width: 42px;
+          padding-left: 3px;
+          padding-right: 3px;
+        }
+
+        .cutoff-tag {
+          font-size: 0.66rem;
+        }
+
+        .pace-row td {
+          font-size: 0.72rem;
+        }
+
+        .wallpaper-panel {
+          margin-top: 10px;
+          padding: 8px;
+        }
+
+        .wallpaper-frame {
+          padding: 8px;
         }
       }
     </style>
