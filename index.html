@@ -1144,27 +1144,27 @@
         const tableX = 98;
         const tableWidth = 974;
         const firstColX = tableX + 28;
-        const rowTop = 522;
+        const rowTop = 692;
         const rowHeight = 156;
         const nameX = firstColX;
         const colXs = [548, 750, 952];
         const parts = [
           `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`,
           `<rect width="${width}" height="${height}" fill="#f6f7f2"/>`,
-          `<rect x="0" y="0" width="${width}" height="388" fill="#1f6f65"/>`,
-          `<path d="M0 316 C228 242 422 408 660 312 C856 232 990 262 1170 178 L1170 410 L0 410 Z" fill="#2f8478" opacity="0.72"/>`,
-          `<path d="M0 360 C164 296 318 356 486 312 C694 258 836 380 1170 268 L1170 430 L0 430 Z" fill="#b53d2e" opacity="0.42"/>`,
-          textSvg("ASO VOLCANO", tableX, 116, 64, 900, "#ffffff"),
-          textSvg(`${hours.join(" / ")} PLAN`, tableX, 184, 40, 800, "#fff4df"),
-          textSvg(`Start 07:00  Rest ${restPattern}  Strategy ${strategy}`, tableX, 246, 28, 700, "#e8fff8"),
-          textSvg(`Sunrise ${SUNRISE_LABEL}  Sunset ${SUNSET_LABEL}  Generated ${generatedAt}`, tableX, 288, 22, 600, "#d7eee9"),
-          `<rect x="${tableX}" y="410" width="${tableWidth}" height="1398" rx="30" fill="#ffffff"/>`,
-          `<line x1="432" y1="410" x2="432" y2="1808" stroke="#d8dee6" stroke-width="3"/>`,
-          `<line x1="649" y1="410" x2="649" y2="1808" stroke="#d8dee6" stroke-width="3"/>`,
-          `<line x1="851" y1="410" x2="851" y2="1808" stroke="#d8dee6" stroke-width="3"/>`,
-          textSvg("AID", nameX, 468, 25, 900, "#66717e"),
-          ...hours.map((hour, index) => textSvg(hour, colXs[index], 468, 30, 900, "#1f6f65", "middle")),
-          `<line x1="${tableX}" y1="494" x2="${tableX + tableWidth}" y2="494" stroke="#d8dee6" stroke-width="2"/>`
+          `<rect x="0" y="0" width="${width}" height="558" fill="#1f6f65"/>`,
+          `<path d="M0 486 C228 412 422 578 660 482 C856 402 990 432 1170 348 L1170 580 L0 580 Z" fill="#2f8478" opacity="0.72"/>`,
+          `<path d="M0 530 C164 466 318 526 486 482 C694 428 836 550 1170 438 L1170 600 L0 600 Z" fill="#b53d2e" opacity="0.42"/>`,
+          textSvg("ASO VOLCANO", tableX, 236, 64, 900, "#ffffff"),
+          textSvg(`${hours.join(" / ")} PLAN`, tableX, 304, 40, 800, "#fff4df"),
+          textSvg(`Start 07:00  Rest ${restPattern}  Strategy ${strategy}`, tableX, 366, 28, 700, "#e8fff8"),
+          textSvg(`Sunrise ${SUNRISE_LABEL}  Sunset ${SUNSET_LABEL}  Generated ${generatedAt}`, tableX, 408, 22, 600, "#d7eee9"),
+          `<rect x="${tableX}" y="580" width="${tableWidth}" height="1398" rx="30" fill="#ffffff"/>`,
+          `<line x1="432" y1="580" x2="432" y2="1978" stroke="#d8dee6" stroke-width="3"/>`,
+          `<line x1="649" y1="580" x2="649" y2="1978" stroke="#d8dee6" stroke-width="3"/>`,
+          `<line x1="851" y1="580" x2="851" y2="1978" stroke="#d8dee6" stroke-width="3"/>`,
+          textSvg("AID", nameX, 638, 25, 900, "#66717e"),
+          ...hours.map((hour, index) => textSvg(hour, colXs[index], 638, 30, 900, "#1f6f65", "middle")),
+          `<line x1="${tableX}" y1="664" x2="${tableX + tableWidth}" y2="664" stroke="#d8dee6" stroke-width="2"/>`
         ];
 
         aidRows.forEach((row, index) => {
