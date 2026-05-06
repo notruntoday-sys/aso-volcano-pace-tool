@@ -145,42 +145,6 @@
         background: #23313f;
       }
 
-      body.compact table {
-        font-size: 0.82rem;
-      }
-
-      body.compact th,
-      body.compact td {
-        padding: 5px 7px;
-      }
-
-      body.compact table {
-        min-width: 840px;
-      }
-
-      body.compact th:first-child,
-      body.compact td:first-child {
-        min-width: 128px;
-        max-width: 148px;
-        white-space: normal;
-        word-break: keep-all;
-      }
-
-      body.compact td:nth-child(2),
-      body.compact th:nth-child(2) {
-        min-width: 98px;
-        max-width: 112px;
-        white-space: normal;
-      }
-
-      body.compact td:nth-child(3),
-      body.compact th:nth-child(3) {
-        min-width: 42px;
-        max-width: 48px;
-        padding-left: 4px;
-        padding-right: 4px;
-      }
-
       .notice {
         margin: 12px 0 0;
         color: var(--muted);
@@ -625,13 +589,6 @@
           最長時間
           <select id="max-hour"></select>
         </label>
-        <label>
-          表示
-          <select id="density">
-            <option value="normal">標準</option>
-            <option value="compact">コンパクト</option>
-          </select>
-        </label>
         <button type="submit">再計算</button>
         <button class="secondary-button" id="wallpaper-button" type="button">待ち受け表示</button>
       </form>
@@ -895,10 +852,9 @@
 
         const thead = document.createElement("thead");
         const headerRow = document.createElement("tr");
-        const isCompact = document.body.classList.contains("compact");
         result.headers.forEach((header) => {
           const th = document.createElement("th");
-          th.textContent = isCompact ? header.replace(" ペース", "") : header;
+          th.textContent = header;
           headerRow.appendChild(th);
         });
         thead.appendChild(headerRow);
@@ -939,8 +895,7 @@
           restPattern: document.querySelector("#rest-pattern").value,
           strategy: document.querySelector("#strategy").value,
           minHour: document.querySelector("#min-hour").value,
-          maxHour: document.querySelector("#max-hour").value,
-          density: document.querySelector("#density").value
+          maxHour: document.querySelector("#max-hour").value
         };
 
         try {
@@ -964,8 +919,6 @@
         setControlValue("#strategy", settings.strategy);
         setControlValue("#min-hour", settings.minHour);
         setControlValue("#max-hour", settings.maxHour);
-        setControlValue("#density", settings.density);
-        document.body.classList.toggle("compact", document.querySelector("#density").value === "compact");
       }
 
       function setControlValue(selector, value) {
@@ -1175,11 +1128,6 @@
 
       document.querySelectorAll("#pace-form input, #pace-form select").forEach((control) => {
         control.addEventListener("change", update);
-      });
-
-      document.querySelector("#density").addEventListener("change", (event) => {
-        document.body.classList.toggle("compact", event.target.value === "compact");
-        update();
       });
 
       document.querySelector("#wallpaper-button").addEventListener("click", showWallpaper);
