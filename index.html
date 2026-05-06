@@ -522,42 +522,42 @@
         }
 
         table {
-          min-width: 760px;
-          font-size: 0.76rem;
+          min-width: 680px;
+          font-size: 0.66rem;
         }
 
         th,
         td {
-          padding: 4px 5px;
+          padding: 3px 4px;
         }
 
         th:first-child,
         td:first-child {
-          min-width: 116px;
-          max-width: 136px;
+          min-width: 102px;
+          max-width: 118px;
         }
 
         td:nth-child(2),
         th:nth-child(2) {
-          min-width: 88px;
-          max-width: 98px;
+          min-width: 76px;
+          max-width: 84px;
           white-space: normal;
         }
 
         td:nth-child(3),
         th:nth-child(3) {
-          min-width: 36px;
-          max-width: 42px;
+          min-width: 30px;
+          max-width: 34px;
           padding-left: 3px;
           padding-right: 3px;
         }
 
         .cutoff-tag {
-          font-size: 0.66rem;
+          font-size: 0.58rem;
         }
 
         .pace-row td {
-          font-size: 0.72rem;
+          font-size: 0.62rem;
         }
 
         .wallpaper-panel {
@@ -608,11 +608,11 @@
         </label>
         <label>
           最短時間
-          <input id="min-hour" type="number" min="1" max="60" value="12">
+          <select id="min-hour"></select>
         </label>
         <label>
           最長時間
-          <input id="max-hour" type="number" min="1" max="60" value="29">
+          <select id="max-hour"></select>
         </label>
         <label>
           表示
@@ -968,6 +968,15 @@
         control.value = stringValue;
       }
 
+      function populateHourSelects() {
+        const minSelect = document.querySelector("#min-hour");
+        const maxSelect = document.querySelector("#max-hour");
+        for (let hour = 12; hour <= 29; hour++) {
+          minSelect.appendChild(new Option(`${hour}時間`, String(hour), hour === 12, hour === 12));
+          maxSelect.appendChild(new Option(`${hour}時間`, String(hour), hour === 29, hour === 29));
+        }
+      }
+
       function showWallpaper() {
         const minHour = clamp(parseInt(document.querySelector("#min-hour").value, 10) || 12, 1, 58);
         const result = calculatePaceData(
@@ -1000,15 +1009,31 @@
         }
 
         const canvas = document.createElement("canvas");
-        canvas.width = 1080;
-        canvas.height = 1920;
+        canvas.width = 1170;
+        canvas.height = 2532;
         const context = canvas.getContext("2d");
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-        const link = document.createElement("a");
-        link.download = image.dataset.fileName || "aso-volcano-pace.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
+        canvas.toBlob(async (blob) => {
+          if (!blob) return;
+          const fileName = image.dataset.fileName || "aso-volcano-pace.png";
+          const file = new File([blob], fileName, { type: "image/png" });
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({ files: [file], title: "ASO VOLCANO pace plan" });
+              return;
+            } catch (error) {
+              if (error.name === "AbortError") return;
+            }
+          }
+
+          const link = document.createElement("a");
+          link.download = fileName;
+          link.href = URL.createObjectURL(blob);
+          link.click();
+          setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+        }, "image/png");
       }
 
       function closeWallpaper() {
@@ -1023,42 +1048,45 @@
       }
 
       function buildWallpaperSvg(result) {
-        const width = 1080;
-        const height = 1920;
+        const width = 1170;
+        const height = 2532;
         const hours = result.headers.slice(3).map((header) => header.replace(" ペース", ""));
         const aidRows = result.rows.filter((row) => row.type === "aid");
         const restPattern = document.querySelector("#rest-pattern").value;
         const strategy = document.querySelector("#strategy").value;
         const generatedAt = new Date().toLocaleString("ja-JP", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
-        const rowTop = 452;
-        const rowHeight = 150;
-        const nameX = 58;
-        const colXs = [490, 710, 930];
+        const tableX = 98;
+        const tableWidth = 974;
+        const firstColX = tableX + 28;
+        const rowTop = 522;
+        const rowHeight = 156;
+        const nameX = firstColX;
+        const colXs = [548, 750, 952];
         const parts = [
           `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`,
           `<rect width="${width}" height="${height}" fill="#f6f7f2"/>`,
-          `<rect x="0" y="0" width="${width}" height="300" fill="#1f6f65"/>`,
-          `<path d="M0 250 C210 190 390 330 610 252 C790 186 915 214 1080 146 L1080 322 L0 322 Z" fill="#2f8478" opacity="0.72"/>`,
-          `<path d="M0 286 C150 236 292 286 448 250 C640 206 772 306 1080 214 L1080 340 L0 340 Z" fill="#b53d2e" opacity="0.42"/>`,
-          textSvg("ASO VOLCANO", 58, 92, 62, 900, "#ffffff"),
-          textSvg(`${hours.join(" / ")} PLAN`, 58, 156, 40, 800, "#fff4df"),
-          textSvg(`Start 07:00  Rest ${restPattern}  Strategy ${strategy}`, 58, 212, 28, 700, "#e8fff8"),
-          textSvg(`Sunrise ${SUNRISE_LABEL}  Sunset ${SUNSET_LABEL}  Generated ${generatedAt}`, 58, 252, 22, 600, "#d7eee9"),
-          `<rect x="38" y="326" width="1004" height="1328" rx="30" fill="#ffffff"/>`,
-          `<line x1="380" y1="326" x2="380" y2="1654" stroke="#d8dee6" stroke-width="3"/>`,
-          `<line x1="600" y1="326" x2="600" y2="1654" stroke="#d8dee6" stroke-width="3"/>`,
-          `<line x1="820" y1="326" x2="820" y2="1654" stroke="#d8dee6" stroke-width="3"/>`,
-          textSvg("AID", nameX, 382, 26, 900, "#66717e"),
-          ...hours.map((hour, index) => textSvg(hour, colXs[index], 382, 30, 900, "#1f6f65", "middle")),
-          `<line x1="38" y1="410" x2="1042" y2="410" stroke="#d8dee6" stroke-width="2"/>`
+          `<rect x="0" y="0" width="${width}" height="388" fill="#1f6f65"/>`,
+          `<path d="M0 316 C228 242 422 408 660 312 C856 232 990 262 1170 178 L1170 410 L0 410 Z" fill="#2f8478" opacity="0.72"/>`,
+          `<path d="M0 360 C164 296 318 356 486 312 C694 258 836 380 1170 268 L1170 430 L0 430 Z" fill="#b53d2e" opacity="0.42"/>`,
+          textSvg("ASO VOLCANO", tableX, 116, 64, 900, "#ffffff"),
+          textSvg(`${hours.join(" / ")} PLAN`, tableX, 184, 40, 800, "#fff4df"),
+          textSvg(`Start 07:00  Rest ${restPattern}  Strategy ${strategy}`, tableX, 246, 28, 700, "#e8fff8"),
+          textSvg(`Sunrise ${SUNRISE_LABEL}  Sunset ${SUNSET_LABEL}  Generated ${generatedAt}`, tableX, 288, 22, 600, "#d7eee9"),
+          `<rect x="${tableX}" y="410" width="${tableWidth}" height="1398" rx="30" fill="#ffffff"/>`,
+          `<line x1="432" y1="410" x2="432" y2="1808" stroke="#d8dee6" stroke-width="3"/>`,
+          `<line x1="649" y1="410" x2="649" y2="1808" stroke="#d8dee6" stroke-width="3"/>`,
+          `<line x1="851" y1="410" x2="851" y2="1808" stroke="#d8dee6" stroke-width="3"/>`,
+          textSvg("AID", nameX, 468, 25, 900, "#66717e"),
+          ...hours.map((hour, index) => textSvg(hour, colXs[index], 468, 30, 900, "#1f6f65", "middle")),
+          `<line x1="${tableX}" y1="494" x2="${tableX + tableWidth}" y2="494" stroke="#d8dee6" stroke-width="2"/>`
         ];
 
         aidRows.forEach((row, index) => {
           const y = rowTop + index * rowHeight;
-          if (index > 0) parts.push(`<line x1="38" y1="${y - 42}" x2="1042" y2="${y - 42}" stroke="#d8dee6" stroke-width="2"/>`);
+          if (index > 0) parts.push(`<line x1="${tableX}" y1="${y - 42}" x2="${tableX + tableWidth}" y2="${y - 42}" stroke="#d8dee6" stroke-width="2"/>`);
 
           const nameLines = cleanCell(row.data[0]).split(" 関門 ");
-          parts.push(textSvg(nameLines[0], nameX, y, 27, 900, "#17202a"));
+          parts.push(textSvg(nameLines[0], nameX, y, 25, 900, "#17202a"));
           if (nameLines[1]) parts.push(textSvg(`関門 ${nameLines[1]}`, nameX, y + 32, 22, 800, "#b53d2e"));
           parts.push(textSvg(cleanCell(row.data[1]), nameX, y + 64, 21, 700, "#66717e"));
           const stay = cleanCell(row.data[2]);
@@ -1067,19 +1095,19 @@
           for (let col = 0; col < 3; col++) {
             const schedules = parseScheduleCell(row.data[col + 3]);
             if (String(row.data[col + 3]).startsWith(HEADLIGHT_CELL_MARKER)) {
-              parts.push(`<rect x="${colXs[col] - 98}" y="${y - 30}" width="196" height="114" rx="14" fill="#edf1f4"/>`);
-              parts.push(`<path d="${makeHatchPath(colXs[col] - 98, y - 30, 196, 114, 12)}" stroke="#b8c0c9" stroke-width="3" opacity="0.65"/>`);
+              parts.push(`<rect x="${colXs[col] - 86}" y="${y - 30}" width="172" height="116" rx="14" fill="#edf1f4"/>`);
+              parts.push(`<path d="${makeHatchPath(colXs[col] - 86, y - 30, 172, 116, 12)}" stroke="#b8c0c9" stroke-width="3" opacity="0.65"/>`);
             }
             const firstColor = row.data[col + 3].includes("arrival-capped") ? "#d91e36" : "#17202a";
             const secondColor = row.data[col + 3].includes("hatched-yellow") ? "#8a5a00" : "#43505c";
             if (schedules.length <= 1) {
               const item = schedules[0] || { elapsed: "-", clock: "", label: "" };
-              parts.push(textSvg(`${item.elapsed}${item.label}`, colXs[col], y + 28, 26, 900, firstColor, "middle"));
+              parts.push(textSvg(`${item.elapsed}${item.label}`, colXs[col], y + 28, 24, 900, firstColor, "middle"));
               if (item.clock) parts.push(textSvg(`(${item.clock})`, colXs[col], y + 60, 22, 800, "#43505c", "middle"));
             } else {
-              parts.push(textSvg(`${schedules[0].elapsed}${schedules[0].label}`, colXs[col], y + 2, 24, 900, firstColor, "middle"));
+              parts.push(textSvg(`${schedules[0].elapsed}${schedules[0].label}`, colXs[col], y + 2, 22, 900, firstColor, "middle"));
               parts.push(textSvg(`(${schedules[0].clock})`, colXs[col], y + 30, 20, 800, "#43505c", "middle"));
-              parts.push(textSvg(`${schedules[1].elapsed}${schedules[1].label}`, colXs[col], y + 72, 24, 900, secondColor, "middle"));
+              parts.push(textSvg(`${schedules[1].elapsed}${schedules[1].label}`, colXs[col], y + 72, 22, 900, secondColor, "middle"));
               parts.push(textSvg(`(${schedules[1].clock})`, colXs[col], y + 100, 20, 800, "#43505c", "middle"));
             }
           }
@@ -1147,6 +1175,7 @@
       document.querySelector("#wallpaper-png").addEventListener("click", downloadWallpaperPng);
       document.querySelector("#wallpaper-close").addEventListener("click", closeWallpaper);
 
+      populateHourSelects();
       restoreSettings();
       update();
     </script>
