@@ -1140,31 +1140,30 @@
         const aidRows = result.rows.filter((row) => row.type === "aid");
         const restPattern = document.querySelector("#rest-pattern").value;
         const strategy = document.querySelector("#strategy").value;
-        const generatedAt = new Date().toLocaleString("ja-JP", { month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
         const tableX = 98;
         const tableWidth = 974;
+        const tableY = 650;
+        const tableBottom = 1990;
         const firstColX = tableX + 28;
-        const rowTop = 692;
-        const rowHeight = 156;
+        const rowTop = 860;
+        const rowHeight = 142;
         const nameX = firstColX;
         const colXs = [548, 750, 952];
         const parts = [
           `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`,
           `<rect width="${width}" height="${height}" fill="#f6f7f2"/>`,
-          `<rect x="0" y="0" width="${width}" height="558" fill="#1f6f65"/>`,
-          `<path d="M0 486 C228 412 422 578 660 482 C856 402 990 432 1170 348 L1170 580 L0 580 Z" fill="#2f8478" opacity="0.72"/>`,
-          `<path d="M0 530 C164 466 318 526 486 482 C694 428 836 550 1170 438 L1170 600 L0 600 Z" fill="#b53d2e" opacity="0.42"/>`,
-          textSvg("ASO VOLCANO", tableX, 236, 64, 900, "#ffffff"),
-          textSvg(`${hours.join(" / ")} PLAN`, tableX, 304, 40, 800, "#fff4df"),
-          textSvg(`Start 07:00  Rest ${restPattern}  Strategy ${strategy}`, tableX, 366, 28, 700, "#e8fff8"),
-          textSvg(`Sunrise ${SUNRISE_LABEL}  Sunset ${SUNSET_LABEL}  Generated ${generatedAt}`, tableX, 408, 22, 600, "#d7eee9"),
-          `<rect x="${tableX}" y="580" width="${tableWidth}" height="1398" rx="30" fill="#ffffff"/>`,
-          `<line x1="432" y1="580" x2="432" y2="1978" stroke="#d8dee6" stroke-width="3"/>`,
-          `<line x1="649" y1="580" x2="649" y2="1978" stroke="#d8dee6" stroke-width="3"/>`,
-          `<line x1="851" y1="580" x2="851" y2="1978" stroke="#d8dee6" stroke-width="3"/>`,
-          textSvg("AID", nameX, 638, 25, 900, "#66717e"),
-          ...hours.map((hour, index) => textSvg(hour, colXs[index], 638, 30, 900, "#1f6f65", "middle")),
-          `<line x1="${tableX}" y1="664" x2="${tableX + tableWidth}" y2="664" stroke="#d8dee6" stroke-width="2"/>`
+          `<rect x="0" y="0" width="${width}" height="650" fill="#1f6f65"/>`,
+          `<path d="M0 548 C228 474 422 640 660 544 C856 464 990 494 1170 410 L1170 682 L0 682 Z" fill="#2f8478" opacity="0.72"/>`,
+          `<path d="M0 598 C164 534 318 594 486 550 C694 496 836 618 1170 506 L1170 706 L0 706 Z" fill="#b53d2e" opacity="0.42"/>`,
+          `<rect x="${tableX}" y="${tableY}" width="${tableWidth}" height="${tableBottom - tableY}" rx="30" fill="#ffffff"/>`,
+          textSvg(`ASO VOLCANO ${hours.join(" / ")} PLAN`, firstColX, 712, 29, 900, "#17202a"),
+          textSvg(`Start 07:00 / Rest ${restPattern} / ${strategy} / Sunrise ${SUNRISE_LABEL} Sunset ${SUNSET_LABEL}`, firstColX, 750, 20, 700, "#66717e"),
+          `<line x1="432" y1="778" x2="432" y2="${tableBottom}" stroke="#d8dee6" stroke-width="3"/>`,
+          `<line x1="649" y1="778" x2="649" y2="${tableBottom}" stroke="#d8dee6" stroke-width="3"/>`,
+          `<line x1="851" y1="778" x2="851" y2="${tableBottom}" stroke="#d8dee6" stroke-width="3"/>`,
+          textSvg("AID", nameX, 820, 25, 900, "#66717e"),
+          ...hours.map((hour, index) => textSvg(hour, colXs[index], 820, 30, 900, "#1f6f65", "middle")),
+          `<line x1="${tableX}" y1="842" x2="${tableX + tableWidth}" y2="842" stroke="#d8dee6" stroke-width="2"/>`
         ];
 
         aidRows.forEach((row, index) => {
